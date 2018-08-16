@@ -1,4 +1,4 @@
-var phonebook = {
+let phonebook = {
     7830: { id: '7830',
         name: 'Rick Sanchez',
         phone: '770-367-5775'},
@@ -16,33 +16,27 @@ var phonebook = {
         phone: '213-313-4583'}
 }
 
+let http = require('http');
 
-
-var http = require('http');
-var fs = require('fs');
-
-var getSuffix = function(url, prefix) {
-    var regex = /,/gi
-    var urlArray = url.split("");
-    var splicedArray = urlArray.splice(prefix.length);
-    var urlsubfix = splicedArray.toString('');
+let getSuffix = (url, prefix) => {
+    let regex = /,/gi
+    let urlArray = url.split("");
+    let splicedArray = urlArray.splice(prefix.length);
+    let urlsubfix = splicedArray.toString('');
     return urlsubfix.replace(regex,"");
 }    
 
-var readBody = function(req, callback) {
-    var body = '';
-    req.on('data', function(chunk) {
+let readBody = (req, callback) => {
+    let body = '';
+    req.on('data', (chunk) => {
         body += chunk.toString();
     });
-    req.on('end', function() {
+    req.on('end', () => {
         callback(body);
     });
 }
 
-
-    
-
-var server = http.createServer (function(req, res) {
+let server = http.createServer ((req, res) =>{
 
 
     if(req.url === '/'){
@@ -51,18 +45,18 @@ var server = http.createServer (function(req, res) {
         res.end(JSON.stringify(phonebook));
     } else if (req.url === "/phonebook" && req.method === "POST") {
         readBody(req, function(body) {
-            var newID = generateID();
-            var newEntry = JSON.parse(body);
+            let newID = generateID();
+            let newEntry = JSON.parse(body);
             newEntry.id = newID.toString();
             phonebook.newID = newEntry;
             res.end("Successful Post!");
         })
     } 
     else if (getSuffix(req.url, '/phonebook/') in phonebook && req.method==="GET") {
-        var idNum = getSuffix(req.url, '/phonebook/');
+        let idNum = getSuffix(req.url, '/phonebook/');
         res.end(JSON.stringify(phonebook[idNum]));
     } else if (getSuffix(req.url, '/phonebook/') in phonebook && req.method==="DELETE") {
-        var idNum = getSuffix(req.url, '/phonebook/');
+        let idNum = getSuffix(req.url, '/phonebook/');
         delete phonebook[idNum];
         res.end("Delete successful");
     } 
@@ -72,9 +66,8 @@ var server = http.createServer (function(req, res) {
     }
 
     
-var generateID = function() {
-    return Math.floor(Math.random() * 10000);
-}
+let generateID = () => Math.floor(Math.random() * 10000);
+
     
 });
 

@@ -3,17 +3,17 @@ const saveC = require('./input');
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 
-var filepath = "phoneBook.txt";
-var currentPhoneBook = {};
+let filepath = "phoneBook.txt";
+let currentPhoneBook = {};
 
-var savePB = function(phoneBook) {
+let savePB = (phoneBook) => {
     currentPhoneBook = phoneBook;
     mainLoop();
 }
 
 saveC.readFile(filepath, savePB);
 
-var menuDisplay = function() {
+let menuDisplay = () => {
     console.log(`
     |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
     |@ Welcome to your phone book. @|
@@ -31,7 +31,7 @@ var menuDisplay = function() {
     `);
 }
 
-var prompt1 = function() {
+let prompt1 = () => {
     rl.question("Who would you like to add to your phonebook? ", (answerName) => {
         rl.question(`What is the number for ${answerName}? `, (answerNumber) => {
             currentPhoneBook[answerName] = answerNumber;
@@ -40,45 +40,45 @@ var prompt1 = function() {
     })
 }
 
-var prompt3 = function() {
+let prompt3 = () => {
     rl.question("Who are you looking for?", (answerName) => {
         console.log(currentPhoneBook[answerName]);
         mainLoop();
     })
 }
 
-var prompt2 = function() {
+let prompt2 = () => {
     rl.question("Who would you like to remove from your phonebook? ", (answerName) => {
         delete currentPhoneBook[answerName];
         mainLoop();
     })
 }
 
-var prompt4 = function() {
+let prompt4 = () => {
     console.log(currentPhoneBook);
     mainLoop();
 }
 
-var prompt5 = function() {
+let prompt5 = () => {
     console.log("Later Gator.")
     saveC.saveEntry(filepath, currentPhoneBook);
     rl.close();
 }
 
-var promptInvalid = function() {
+let promptInvalid = () => {
     console.log("Sorry, that input is invalid.")
     mainLoop();
 }
 
-var promptOptions = [prompt1, prompt2, prompt3, prompt4, prompt5, promptInvalid];
+let promptOptions = [prompt1, prompt2, prompt3, prompt4, prompt5, promptInvalid];
 
-var askForPrompt = function() {
+let askForPrompt = () => {
     rl.question("What would you like to do? ", (answer) => {
         promptOptions[answer - 1]();
     });
 }
 
-var mainLoop = function() {  
+let mainLoop = () => {  
     menuDisplay();
     askForPrompt(); 
 };

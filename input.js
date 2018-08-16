@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-var saveToBook = function(file, object) {
+let saveToBook = (file, object) => {
     try {
-        fs.writeFile(file, JSON.stringify(object), function(success) {
+        fs.writeFile(file, JSON.stringify(object), (success) => {
             console.log(`Okay additions have been saved in your phonebook.`);
         });
     }catch (e) {
@@ -10,12 +10,12 @@ var saveToBook = function(file, object) {
     }
 }
 
-var readFile = function(file, callBack) {
-    fs.readFile(file, 'utf8', function(err, data) {
+let readFile = (file, callBack) => {
+    fs.readFile(file, 'utf8', (err, data) => {
         if (err) {
             console.log(err);
         } else {
-            var currentPhonebook = JSON.parse(data);
+            let currentPhonebook = JSON.parse(data);
             callBack(currentPhonebook);
         }
     })
